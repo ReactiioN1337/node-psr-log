@@ -35,6 +35,16 @@ class Log
     this._level = level
   }
 
+  setStdOut(active)
+  {
+    this._stdout = active
+  }
+
+  setPath(path)
+  {
+    this._path = path
+  }
+
   debug(msg, channel = null, args = undefined)
   {
     this._prepare(LogType.Debug, msg, channel, args)
@@ -109,7 +119,7 @@ ${JSON.stringify(args)}`
       if (this._stdout) {
         console.log(`${stdQuery} ${msg}`)
       }
-      if (this._path !== undefined && this._path !== null) {
+      if (this._path !== undefined && this._path !== null && this._path.length > 0) {
         fs.writeFileSync(this._path, `${query} ${msg}\n`, {
           encoding: 'utf8',
           flag: 'a'
