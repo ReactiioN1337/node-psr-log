@@ -1,5 +1,5 @@
 {
-  "name": "psr-log",
+  "name": "node-psr-log",
   "version": "1.1.0",
   "main": "src/log.ts",
   "author": {

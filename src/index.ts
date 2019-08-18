@@ -14,7 +14,6 @@ enum LogLevel {
     Emergency
 }
 
-
 namespace LogLevel {
     export function serialize(id: LogLevel): string {
         switch (id) {
