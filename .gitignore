@@ -1,6 +1,9 @@
 # node packages
 node_modules/
 
+# generated javascript code
+/lib
+
 # log files
 *.log
 *.log.*
