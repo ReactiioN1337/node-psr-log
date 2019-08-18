@@ -12,19 +12,22 @@ A PSR-3 Logger class, but in node.js
 ## Usage
 
 ```JS
-const {Log, LogType} = require('node-psr-log')
+const {Log, LogLevel} = require('node-psr-log')
 
-const log = new Log('/my/path/or/null/to/ignore/file/logging', LogType.Notice)
-log.setChannel('my-awesome-project')
+const log = new Log(LogLevel.Notice, 'my-awesome-project', '/my/path/or/null/to/ignore/file/logging')
 log.setStdOut(true)
 
 // will be ignored because info < notice
 log.info('test message')
 // will be displayed in stdout / written to file
 log.warning('test message')
+// arguments are supported
+log.debug('some other test', {data: 'cool'})
+// also another channel name for this message
+log.debug('some other test', {data: 'nasa'}, 'moon')
 ```
 
-## new Log(path[, level, dateFormat])
+## new Log(level, [channel, path, dateFormat])
 
 Creates a new log instance
 
@@ -32,23 +35,26 @@ Creates a new log instance
 
 ```JS
 // log to stdout only
-const log = new Log(null)
+const log = new Log(LogLevel.Debug)
 // or log to stdout + file
-const log = new Log('~/test.log')
+const log = new Log(LogLevel.Debug, null, '~/test.log')
 // or log to file only
-const log = new Log('~/test.log')
+const log = new Log(LogLevel.Debug, null, '~/test.log')
 log.setStdOut(false)
 ```
 
 **Parameters**
 
-- `path`
-  - Type: `string` or `null`
-  - The log output filepath.
 - `level`
-  - Type: `LogType`
-    - Optional, by default the value is set to `LogType.Everything`
+  - Type: `LogLevel`
+    - Optional, by default the value is set to `LogLevel.Everything`
   - Determines the minimum level at which the instance will start logging.
+- `channel`
+  - Type: `string`, `undefined` or `null`
+  - The log channel name
+- `path`
+  - Type: `string`, `undefined` or `null`
+  - The log output filepath.
 - `dateFormat`
   - Type: `string`
     - Optional, by default the value is set to `DD.MM.YYYY HH:mm:ss`. See [moment.js](https://momentjs.com/) for more informations about formating.
@@ -93,13 +99,13 @@ Sets the minimum level at which the instance will start logging.
 **Syntax**
 
 ```JS
-log.setLevel(LogType.Everything)
+log.setLevel(LogLevel.Everything)
 ```
 
 **Parameters**
 
 - `level`
-  - Type: `LogType`
+  - Type: `LogLevel`
   - The minimum level to start logging.
 
 ## setStdOut(active)
@@ -134,7 +140,7 @@ log.setPath('~/test.log')
   - Type: `string`
   - The output path where the log can be written to.
 
-## method(msg[, channel = null, args = undefined])
+## method(msg[, args, channel])
 
 Each of the following log methods uses the parameters given above.
 
@@ -152,9 +158,9 @@ Each of the following log methods uses the parameters given above.
 ```JS
 log.debug('this is a debug message inside the regular channel')
 // use "git" as channel name
-log.notice('this is a notice message from another channel', 'git')
+log.notice('this is a notice message from another channel', null, 'git')
 // use 'app' as channel name and print some arguments
-log.warning('oops, we ran into some problems...', 'app', {code: 2, message: 'not implemented'})
+log.warning('oops, we ran into some problems...', {code: 2, message: 'not implemented'}, 'app')
 ```
 
 **Parameters**
@@ -162,11 +168,11 @@ log.warning('oops, we ran into some problems...', 'app', {code: 2, message: 'not
 - `msg`
   - Type: `string`
   - The message to log.
-- `channel`
-  - Type: `string`
-    - Optional and by default set to `null`.
-  - Use another channel name instead of the default one for this message.
 - `args`
   - Type: `any`
     - Optional and by default set to `undefined`.
   - Can be used to display error values or other stuff.
+- `channel`
+  - Type: `string`
+    - Optional and by default set to `null`.
+  - Use another channel name instead of the default one for this message.
