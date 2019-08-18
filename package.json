@@ -1,7 +1,7 @@
 {
   "name": "node-psr-log",
-  "version": "1.1.1",
-  "main": "src/log.ts",
+  "version": "1.1.2",
+  "main": "lib/index.js",
   "author": {
     "name": "ReactiioN",
     "email": "mail@reactiion.net",
