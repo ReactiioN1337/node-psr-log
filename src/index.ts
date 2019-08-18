@@ -46,7 +46,18 @@ namespace LogLevel {
     }
 }
 
-class Log {
+interface PSR3LoggingInterface {
+    debug(msg: string, args?: any, channel?: string): void
+    info(msg: string, args?: any, channel?: string): void
+    notice(msg: string, args?: any, channel?: string): void
+    warning(msg: string, args?: any, channel?: string): void
+    error(msg: string, args?: any, channel?: string): void
+    critical(msg: string, args?: any, channel?: string): void
+    alert(msg: string, args?: any, channel?: string): void
+    emergency(msg: string, args?: any, channel?: string): void
+}
+
+class Log implements PSR3LoggingInterface{
     private _level:      LogLevel
     private _channel:    string | null
     private _dateFormat: string
