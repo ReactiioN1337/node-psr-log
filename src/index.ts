@@ -171,8 +171,8 @@ class Log implements PSR3LoggingInterface{
             }
             if (this._dateFormat.length > 0) {
                 const date: string = moment().format(this._dateFormat)
-                stdQuery += `[${clc.cyanBright(date)}]`
-                query    += `[${date}]`
+                stdQuery += `[${clc.cyanBright(date)}] `
+                query    += `[${date}] `
             }
             if (args !== undefined && args !== null) {
                 if (typeof(args) !== 'string') {
@@ -181,10 +181,10 @@ class Log implements PSR3LoggingInterface{
                 msg += `\n${args}`
             }
             if (this._stdOut === true) {
-                console.log(`${stdQuery} ${msg}`)
+                console.log(`${stdQuery}${msg}`)
             }
             if (this._path !== undefined && this._path !== null && this._path.length > 0) {
-                fs.writeFileSync(this._path, `${query} ${msg}\n`, {encoding: 'utf8', flag: 'a'})
+                fs.writeFileSync(this._path, `${query}${msg}\n`, {encoding: 'utf8', flag: 'a'})
             }
         }
     }
