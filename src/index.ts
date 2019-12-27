@@ -150,7 +150,7 @@ class Log implements PSR3LoggingInterface{
                     pad = 2
                     break
                 case LogLevel.Emergency:
-                    pad = 2
+                    pad = 1
                     break
                 default:
                     break
