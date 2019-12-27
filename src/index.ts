@@ -130,29 +130,49 @@ class Log implements PSR3LoggingInterface{
             let stdQuery = `[${LogLevel.serializeColor(level)}]`,
                 query    = `[${LogLevel.serialize(level)}]`
 
+            let pad = 0
             switch (level) {
-                case LogLevel.Debug:
-                case LogLevel.Error:
                 case LogLevel.Info:
+                    pad = 6
+                    break
+                case LogLevel.Debug:
                 case LogLevel.Alert:
-                    stdQuery += '\t'
-                    stdQuery += '\t'
+                case LogLevel.Error:
+                    pad = 5
+                    break
+                case LogLevel.Notice:
+                    pad = 4
+                    break
+                case LogLevel.Warning:
+                    pad = 3
+                    break
+                case LogLevel.Critical:
+                    pad = 2
+                    break
+                case LogLevel.Emergency:
+                    pad = 2
                     break
                 default:
                     break
+            }
+
+            if (pad > 0) {
+                const padStr = ''.padEnd(pad)
+                query    += padStr
+                stdQuery += padStr
             }
 
             const useNewChannel: boolean = channel !== null && channel !== undefined && channel.length > 0
             const useOldChannel: boolean = !useNewChannel && this._channel !== null && this._channel.length > 0
 
             if (useNewChannel === true || useOldChannel === true) {
-                stdQuery += `\t[${clc.magenta(channel !== null && channel !== undefined ? channel : this._channel)}]`
-                query    += `\t[${channel !== null && channel !== undefined? channel : this._channel}]`
+                stdQuery += `[${clc.magenta(channel !== null && channel !== undefined ? channel : this._channel)}] `
+                query    += `[${channel !== null && channel !== undefined? channel : this._channel}] `
             }
             if (this._dateFormat.length > 0) {
                 const date: string = moment().format(this._dateFormat)
-                stdQuery += `\t[${clc.cyanBright(date)}]`
-                query    += `\t[${date}]`
+                stdQuery += `[${clc.cyanBright(date)}]`
+                query    += `[${date}]`
             }
             if (args !== undefined && args !== null) {
                 if (typeof(args) !== 'string') {
